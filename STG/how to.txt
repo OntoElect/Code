@@ -1,0 +1,5 @@
+run_research.py --first "abc" --second "abcs"
+run_research.py -f "abc" -s "abcs"
+
+run.py -m jaro -c 0.8 
+run.py —method jaro —convergence 0.8 
