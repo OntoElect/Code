@@ -1,7 +1,7 @@
 ## Description:
 
 ## Input 
-Put data DAC collection to input folder (use .pdf format)
+Put data collection to input folder (use .pdf format)
 
 ## Launching:
 Open Java application in IntelliJ Idea or the other dev tool.
