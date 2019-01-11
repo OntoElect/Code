@@ -6,10 +6,13 @@
 
 import ate3 as ate
 import argparse
-
+import time
 from os import listdir
 from os.path import isfile, join
+import os
+import psutil
 
+t0 = time.time()
 
 parser = argparse.ArgumentParser()
 
@@ -42,3 +45,9 @@ for f in raw_txt_files:
         print("\n\n")
     
     ftxt.close()
+
+t1 = time.time()
+print "finished in ", t1 - t0, " seconds "
+
+process = psutil.Process(os.getpid())
+print(process.memory_info().rss)  # in bytes 

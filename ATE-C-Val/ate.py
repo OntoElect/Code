@@ -8,8 +8,6 @@ import csv
 
 import os
 import psutil
-process = psutil.Process(os.getpid())
-print(process.memory_info().rss)  # in bytes 
 
 # reads plain text file
 # and generate list of terms
@@ -64,7 +62,5 @@ with open(out_terms, 'wb') as csvfile:
 
 t1 = time.time()
 print "finished in ", t1 - t0, " seconds "
-import os
-import psutil
 process = psutil.Process(os.getpid())
 print(process.memory_info().rss)  # in bytes 
