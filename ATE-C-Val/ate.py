@@ -63,4 +63,4 @@ with open(out_terms, 'wb') as csvfile:
 t1 = time.time()
 print "finished in ", t1 - t0, " seconds "
 process = psutil.Process(os.getpid())
-print(process.memory_info().rss)  # in bytes 
+print(process.memory_info().rss, "bytes")  # in bytes 
