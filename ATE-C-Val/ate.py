@@ -20,7 +20,7 @@ parser.add_argument("--stopwords", help="text file containing stopwords, one wor
 parser.add_argument("--term_patterns", help="text file containing term patterns, one word per row")
 parser.add_argument("--min_term_words", default=2, help="number of words in one term")
 parser.add_argument("--min_term_length", default=3, help="minimal number of characters in the term")
-parser.add_argument("--trace", default=0, help="show detailed information")
+parser.add_argument("--trace", default=0, help="show detailed information about execution")
 
 args = parser.parse_args()
 
