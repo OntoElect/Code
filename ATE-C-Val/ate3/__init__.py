@@ -1,6 +1,7 @@
 # import PyPDF2
 import nltk
 from nltk.stem import WordNetLemmatizer
+from nltk.tag.perceptron import PerceptronTagger
 import numpy as np
 from os import listdir
 from os.path import isdir
@@ -179,12 +180,13 @@ class TermExtractor:
         self.term_patterns = term_patterns
         self.min_term_words = min_term_words
         self.detectors = []
+        self.pos_tagger=PerceptronTagger()
         for tp in term_patterns:
             self.detectors.append(POSSequenceDetector(tp))
             
         self.swd = StopWordsDetector(self.stopwords)
         
-    def extract_terms(self, doc_txt):
+    def extract_terms(self, doc_txt, trace=False):
         sent_tokenize_list = filter(lambda x: len(x) > 0, map(lambda s: nltk.tokenize.sent_tokenize(s), doc_txt))
         sentences = []
         _ = [sentences.extend(lst) for lst in sent_tokenize_list]
@@ -198,13 +200,14 @@ class TermExtractor:
         for s in sentences:
             text = nltk.word_tokenize(s)
             #sent_pos_tags=nltk.pos_tag(text, tagset='universal')
-            sent_pos_tags = nltk.pos_tag(text)
+            sent_pos_tags = self.pos_tagger.tag(text)
             sentence_terms = set()
             for fsa1 in self.detectors:
                 stn = filter(filter_fn, [' '.join(t) for t in fsa1.detect(sent_pos_tags) if len(t) >= self.min_term_words and len(self.swd.detect(t)) == 0])
                 sentence_terms.update(stn)
             terms.extend(sentence_terms)
-            print(i, '/', max_i, s)
+            if trace:
+                print(i, '/', max_i, s)
             i = i + 1
         return terms
     '''
@@ -235,11 +238,13 @@ class TermExtractor:
                     # i may be inside j
                     if term_series[j].find(term_series[i]) >= 0:
                         # i is inside j
-                        print term_series[i], " -- ",term_series[j]
+                        if trace:
+                            print term_series[i], " -- ",term_series[j]
                         is_part_of.append((term_series[i], term_series[j], 1))
         subterms = pd.DataFrame(is_part_of, columns=['term', 'part_of', 'w']).set_index(['term', 'part_of'])
         
-        print "terms/subterms relations discovered ..."
+        if trace:
+            print "terms/subterms relations discovered ..."
 
         c_values = []
         # term_series=['time']
