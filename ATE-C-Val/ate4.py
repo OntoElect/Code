@@ -237,7 +237,7 @@ class TermExtractor:
             haystack=term_series[i]
             for end_index, (insert_order, original_value) in A.iter(haystack):
                 if original_value!=haystack:
-                    print original_value, "insideof ", haystack
+                    #print original_value, "insideof ", haystack
                     is_part_of.append((original_value, haystack, 1))
         subterms = pd.DataFrame(is_part_of, columns=['term', 'part_of', 'w']).set_index(['term', 'part_of'])
 
