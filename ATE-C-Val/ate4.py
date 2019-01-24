@@ -206,7 +206,7 @@ class TermExtractor:
             for fsa1 in self.detectors:
                 stn = filter(filter_fn, [' '.join(t) for t in fsa1.detect(sent_pos_tags) if len(t) >= self.min_term_words and len(self.swd.detect(t)) == 0])
                 sentence_terms.update(stn)
-            terms.extend([str(trm) for trm in sentence_terms])
+            terms.extend([str(trm).strip() for trm in sentence_terms])
             if trace:
                 print(i, '/', max_i, s)
             i = i + 1
@@ -220,24 +220,23 @@ class TermExtractor:
         terms_df['len'] = len(terms_df['term'])
         term_stats = terms_df.groupby(['term'])['w'].agg([np.sum])
         term_stats['len'] = list(pd.Series(term_stats.index).apply(lambda x:len(x)))
-        term_stats.sort_values(by=['len'], ascending=True, inplace=True)
-
 
         term_series = list(term_stats.index)
         n_terms = len(term_series)
         
         for i in range(0, n_terms):
             term_series[i]=' '+str(term_series[i])+' '
+
+        
+        term_stats['trm']=term_series
+        term_stats.set_index('trm', inplace=True)
+
         A = ahocorasick.Automaton()
-        
-        
         for i in range(0, n_terms):
             A.add_word(term_series[i], (i, term_series[i]))
-            
         A.make_automaton()
 
         is_part_of = []
-        
         for i in range(0, n_terms):
             haystack=term_series[i]
             for end_index, (insert_order, original_value) in A.iter(haystack):
@@ -252,25 +251,25 @@ class TermExtractor:
         c_values = []
         # term_series=['time']
         for t in term_series:
-            # print t
-            current_term = term_stats.loc[t.strip()]
-            # average frequency of the superterms
-            c_value = 0
-            if t in subterms.index:
-                subterm_of = list(subterms.loc[t].index)
-                for st in subterm_of:
-                    c_value -= term_stats.loc[st]['sum']
-                c_value /= float(len(subterm_of))
+            if t in term_stats.index:
+                current_term = term_stats.loc[t]
+                # average frequency of the superterms
+                c_value = 0
+                if t in subterms.index:
+                    subterm_of = list(subterms.loc[t].index)
+                    for st in subterm_of:
+                        c_value -= term_stats.loc[st]['sum']
+                    c_value /= float(len(subterm_of))
 
-            # add current term frequency
-            c_value += current_term['sum']
+                # add current term frequency
+                c_value += current_term['sum']
 
-            # multiply to log(term length)
-            c_value = c_value * np.log(current_term['len'])
-            if trace:
-            	print(t, 'freq=', current_term['sum'], ' cvalue=', c_value)
-            c_values.append(c_value)
-            # break
+                # multiply to log(term length)
+                c_value = c_value * np.log(current_term['len'])
+                if trace:
+                    print(t, 'freq=', current_term['sum'], ' cvalue=', c_value)
+                c_values.append(c_value)
+                # break
 
         return sorted(zip(term_series, c_values), key=lambda x: x[1], reverse=True)
     # sentences[0:10]
