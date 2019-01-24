@@ -1,17 +1,13 @@
 # import PyPDF2
 import nltk
-from nltk.stem import WordNetLemmatizer
 from nltk.tag.perceptron import PerceptronTagger
 import numpy as np
 from os import listdir
-from os.path import isdir
 from os.path import isfile
 from os.path import join
 import pandas as pd
 import random
 import re
-import scipy
-from sklearn.feature_extraction.text import CountVectorizer
 import textract
 import time
 import ahocorasick
