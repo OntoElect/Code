@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 #encoding: UTF-8
 import time
-import ate3 as ate
+import ate4 as ate
 import argparse
 import re
 import csv
