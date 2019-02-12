@@ -187,7 +187,9 @@ class TermExtractor:
         sent_tokenize_list = filter(lambda x: len(x) > 0, map(lambda s: nltk.tokenize.sent_tokenize(s), doc_txt))
         sentences = []
         _ = [sentences.extend(lst) for lst in sent_tokenize_list]
-        
+        if trace:
+            print('len(sentences)=' + str(len(sentences)))
+
         terms = [] #pd.DataFrame(columns=['term'])
         #sentences = sentences[:30]
 
@@ -261,13 +263,13 @@ class TermExtractor:
                 c_value += current_term['sum']
 
                 # multiply to log(term length)
-                c_value = c_value * np.log(current_term['len'])
+                c_value = c_value * np.log(current_term['len']) if current_term['len']>0 else 0
                 if trace:
                     print(t, 'freq=', current_term['sum'], ' cvalue=', c_value)
                 c_values.append(c_value)
                 # break
 
-        return sorted(zip(term_series, c_values), key=lambda x: x[1], reverse=True)
+        return sorted(zip( [x.strip() for x in term_series], c_values), key=lambda x: x[1], reverse=True)
     # sentences[0:10]
     # print self.stopwords
 '''

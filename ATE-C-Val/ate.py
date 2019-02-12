@@ -37,7 +37,7 @@ out_terms=args.out_terms
  
 trace = ( args.trace=='1' )
 
-print trace
+# print trace
 
 fp=open(args.term_patterns,'r')
 term_patterns = [r.strip() for r in fp.readlines() if len(r.strip())>0 ]
@@ -50,14 +50,15 @@ t0 = time.time()
 fp = open(in_dataset, "r")
 doc_txt = fp.read() 
 fp.close()
-doc_txt = unicode(doc_txt, "utf-8", errors='ignore')
+doc_txt = unicode(doc_txt, "utf-8", errors='replace').replace(u'\ufffd', '_')
 doc_txt = re.sub(r'et +al\.', 'et al', doc_txt)
 doc_txt = re.split(r'[\r\n]', doc_txt)
 
+# print('len(text)=' + str( len(doc_txt) ) )
 
 term_extractor = ate.TermExtractor(stopwords=stopwords, term_patterns=term_patterns, min_term_words=min_term_words, min_term_length=min_term_length)
 terms = term_extractor.extract_terms(doc_txt, trace=trace)
-
+print('len(terms)=' + str(len(terms)))
 if trace:
     #print terms[:10]
     print "Term extraction finished"
