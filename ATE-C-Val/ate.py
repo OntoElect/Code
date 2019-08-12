@@ -61,7 +61,7 @@ terms = term_extractor.extract_terms(doc_txt, trace=trace)
 print('len(terms)=' + str(len(terms)))
 if trace:
     #print terms[:10]
-    print "Term extraction finished"
+    print ("Term extraction finished")
 
 c_values = term_extractor.c_values(terms, trace=trace) ## replace this line
 
@@ -72,6 +72,6 @@ with open(out_terms, 'wb') as csvfile:
 
 
 t1 = time.time()
-print "finished in ", t1 - t0, " seconds "
+print("finished in ", t1 - t0, " seconds ")
 process = psutil.Process(os.getpid())
 print('used RAM(bytes)=',process.memory_info().rss)  # in bytes 

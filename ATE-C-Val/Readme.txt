@@ -1,8 +1,19 @@
 This folder contains the software for Automated Term Extraction (ATE) using the c-value method. 
 
-Sample call is
+Installation via pipenv + pip
 
-PYTHONPATH=/usr/local/lib/python2.7/dist-packages  python2 ate.py \
+For MS Windows, before start you need to install VC compiler for python ( http://aka.ms/vcpython27 )
+
+```
+	cd /your/path/to/ATE-C-Val
+	pipenv install --python 2.7
+	pipenv run python -m pip install nltk numpy pyahocorasick pandas psutil textract
+```
+
+
+Sample call is
+cd /your/path/to/ATE-C-Val
+pipenv run python python2 ate.py \
   --in_dataset=data/datasets/time/D0000000001.txt \
   --out_terms=data/terms/time/D0000000001.csv \
   --stopwords=data/etc/stopwords.csv \

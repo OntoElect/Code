@@ -8,7 +8,7 @@ from os.path import join
 import pandas as pd
 import random
 import re
-import textract
+
 import time
 import ahocorasick
 
@@ -244,7 +244,7 @@ class TermExtractor:
         subterms = pd.DataFrame(is_part_of, columns=['term', 'part_of', 'w']).set_index(['term', 'part_of'])
 
         if trace:
-            print "terms/subterms relations discovered ..."
+            print("terms/subterms relations discovered ...")
 
         c_values = []
         # term_series=['time']
@@ -279,8 +279,11 @@ class TermExtractor:
 
 '''
 def pdf_to_text_textract(pdf_file_path):
-    page_text = textract.process(pdf_file_path)    #, encoding='ascii'
-    
+    try:
+        page_text = textract.process(pdf_file_path)    #, encoding='ascii'
+    except:
+        import textract
+        page_text = textract.process(pdf_file_path)    #, encoding='ascii'    
     return page_text
 
 def pdf_to_text_pypdf(_pdf_file_path):	
@@ -326,8 +329,8 @@ def compose_datasets(txt_file_dir, dataset_file_dir, increment_size=1, increment
                 fl.write(dataset)
                 fl.close()
                 t1 = time.time()
-                print n_dataset, fnm, t1 - t0,'sec',fnames
-                print "\n"
+                print (n_dataset, fnm, t1 - t0,'sec',fnames)
+                print ("\n")
                 
         if cnt % increment_size > 0:
             n_dataset += 1
@@ -336,8 +339,8 @@ def compose_datasets(txt_file_dir, dataset_file_dir, increment_size=1, increment
             fl.write(dataset)
             fl.close()
             t1 = time.time()
-            print n_dataset, fnm, t1 - t0,'sec',fnames
-            print "\n"
+            print (n_dataset, fnm, t1 - t0,'sec',fnames)
+            print ("\n")
 
     if increment_strategy == 'time-desc':
         t0 = time.time()
@@ -362,8 +365,8 @@ def compose_datasets(txt_file_dir, dataset_file_dir, increment_size=1, increment
                 fl.write(dataset)
                 fl.close()
                 t1 = time.time()
-                print n_dataset, fnm, t1 - t0,'sec',fnames
-                print "\n"
+                print (n_dataset, fnm, t1 - t0,'sec',fnames)
+                print ("\n")
 
         if cnt % increment_size > 0:
             n_dataset += 1
@@ -372,8 +375,8 @@ def compose_datasets(txt_file_dir, dataset_file_dir, increment_size=1, increment
             fl.write(dataset)
             fl.close()
             t1 = time.time()
-            print n_dataset, fnm, t1 - t0,'sec',fnames
-            print "\n"
+            print (n_dataset, fnm, t1 - t0,'sec',fnames)
+            print ("\n")
 
     if increment_strategy == 'random':
         t0 = time.time()
@@ -398,8 +401,8 @@ def compose_datasets(txt_file_dir, dataset_file_dir, increment_size=1, increment
                 fl.write(dataset)
                 fl.close()
                 t1 = time.time()
-                print n_dataset, fnm, t1 - t0,'sec',fnames
-                print "\n"
+                print (n_dataset, fnm, t1 - t0,'sec',fnames)
+                print ("\n")
 
         if cnt % increment_size > 0:
             n_dataset += 1
@@ -408,8 +411,8 @@ def compose_datasets(txt_file_dir, dataset_file_dir, increment_size=1, increment
             fl.write(dataset)
             fl.close()
             t1 = time.time()
-            print n_dataset, fnm, t1 - t0,'sec',fnames
-            print "\n"
+            print (n_dataset, fnm, t1 - t0,'sec',fnames)
+            print ("\n")
 
     if increment_strategy == 'time-bidir':
         t0 = time.time()
@@ -443,8 +446,8 @@ def compose_datasets(txt_file_dir, dataset_file_dir, increment_size=1, increment
                 fl.write(dataset)
                 fl.close()
                 t1 = time.time()
-                print n_dataset, fnm, t1 - t0,'sec',fnames
-                print "\n"
+                print (n_dataset, fnm, t1 - t0,'sec',fnames)
+                print ("\n")
 
         if cnt % increment_size > 0:
             n_dataset += 1
@@ -453,8 +456,8 @@ def compose_datasets(txt_file_dir, dataset_file_dir, increment_size=1, increment
             fl.write(dataset)
             fl.close()
             t1 = time.time()
-            print n_dataset, fnm, t1 - t0,'sec',fnames
-            print "\n"
+            print (n_dataset, fnm, t1 - t0,'sec',fnames)
+            print ("\n")
 
 
     if increment_strategy == 'citation-desc':
@@ -492,8 +495,8 @@ def compose_datasets(txt_file_dir, dataset_file_dir, increment_size=1, increment
                 fl.write(dataset)
                 fl.close()
                 t1 = time.time()
-                print n_dataset, fnm, t1 - t0,'sec',fnames
-                print "\n"
+                print (n_dataset, fnm, t1 - t0,'sec',fnames)
+                print ("\n")
 
         if cnt % increment_size > 0:
             n_dataset += 1
@@ -502,8 +505,8 @@ def compose_datasets(txt_file_dir, dataset_file_dir, increment_size=1, increment
             fl.write(dataset)
             fl.close()
             t1 = time.time()
-            print n_dataset, fnm, t1 - t0,'sec',fnames
-            print "\n"
+            print (n_dataset, fnm, t1 - t0,'sec',fnames)
+            print ("\n")
 
     if not  strategy_found:
         print("strategy not found")
